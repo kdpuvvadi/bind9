@@ -8,11 +8,12 @@ services:
       - BIND9_USER=root
       - TZ=Asia/Kolkata
     volumes:
-      - /home/kd/compose/bind9/config:/etc/bind:rw
-      - /home/kd/compose/bind9/cache:/var/cache/bind:rw
-      - /home/kd/compose/bind9/records:/var/lib/bind:rw
-      - /home/kd/compose/bind9/logs:/var/log/bind:rw
+      - ./config:/etc/bind:rw
+      - ./cache:/var/cache/bind:rw
+      - ./records:/var/lib/bind:rw
+      - ./logs:/var/log/bind:rw
     # network_mode: host
+    user: root
     ports:
       - 53:53/tcp
       - 53:53/udp
