@@ -4,9 +4,11 @@ services:
   bind9:
     container_name: dns
     image: ubuntu/bind9:latest
+    env_file: .env
     environment:
-      - BIND9_USER=root
-      - TZ=Asia/Kolkata
+      - BIND9_USER=${BIND9_USER}
+      - TZ=${TZ}
+      - ServerIP= ${ServerIP}
     volumes:
       - ./config:/etc/bind:rw
       - ./cache:/var/cache/bind:rw
