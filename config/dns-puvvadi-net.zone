@@ -24,6 +24,6 @@ pg              IN      A       10.20.20.115
 pve             IN      A       10.20.20.104
 runner1         IN      A       10.20.20.122
 dns1		IN	A   	10.20.20.20
-ha		IN	A	10.20.20.134
+ha		IN	A	10.20.30.5
 bind		IN	A	192.168.0.6
 cool            IN      A       10.20.20.134
