@@ -4,21 +4,17 @@ services:
   bind9:
     container_name: dns
     image: ubuntu/bind9:latest
-    env_file: .env
-    environment:
-      - BIND9_USER=${BIND9_USER}
-      - TZ=${TZ}
-      - ServerIP= ${ServerIP}
+    env_file: 
+      - .env
     volumes:
       - ./config:/etc/bind:rw
       - ./cache:/var/cache/bind:rw
       - ./records:/var/lib/bind:rw
       - ./logs:/var/log/bind:rw
-    network_mode: host
     user: root
-    # ports:
-    #   - 53:53/tcp
-    #   - 53:53/udp
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
     dns:
       - 127.0.0.1
       - 1.1.1.1
