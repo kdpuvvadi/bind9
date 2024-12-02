@@ -4,7 +4,7 @@ services:
   bind9:
     container_name: dns
     image: ubuntu/bind9:latest
-    env_file: 
+    env_file:
       - .env
     volumes:
       - ./config:/etc/bind:rw
