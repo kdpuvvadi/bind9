@@ -16,6 +16,5 @@ services:
       - 53:53/tcp
       - 53:53/udp
     dns:
-      - 127.0.0.1
       - 1.1.1.1
     restart: always
