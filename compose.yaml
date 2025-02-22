@@ -19,3 +19,10 @@ services:
     dns:
       - 1.1.1.1
     restart: always
+  metrics:
+    container_name: metrics
+    image: prometheuscommunity/bind-exporter:latest
+    command: --bind.stats-url http://dns:8080
+    ports:
+      - 9119:9119
+    restart: unless-stopped
