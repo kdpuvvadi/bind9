@@ -19,6 +19,8 @@ services:
     dns:
       - 1.1.1.1
     restart: always
+    networks:
+      - dns
   metrics:
     container_name: metrics
     image: prometheuscommunity/bind-exporter:latest
@@ -26,3 +28,9 @@ services:
     ports:
       - 9119:9119
     restart: unless-stopped
+    networks:
+      - dns
+networks:
+  dns:
+    external: true
+
