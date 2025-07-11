@@ -1,4 +1,4 @@
-$ORIGIN timm.puvvadi.net.
+$ORIGIN time.puvvadi.net.
 $TTL 86400	; 1 day
 @               IN      SOA     ns.time.puvvadi.net. info.puvvadi.net. (
                 				1107251704 ; serial
