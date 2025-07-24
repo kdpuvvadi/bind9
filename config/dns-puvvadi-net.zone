@@ -29,3 +29,4 @@ bind		IN	A	192.168.0.6
 cool		IN	A	10.20.20.134
 metrics		IN	A	10.20.20.135
 otf		IN	A	10.20.20.137
+guard		IN	A	10.20.30.30
