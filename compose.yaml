@@ -17,3 +17,9 @@ services:
     network_mode: host
     cap_add:
       - NET_BIND_SERVICE
+    command: ["-u", "1000", "-f"]
+    healthcheck:
+      test: ["CMD", "dig", "@127.0.0.1", "google.com"]
+      interval: 90s
+      timeout: 10s
+      retries: 3
