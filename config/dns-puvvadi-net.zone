@@ -33,4 +33,4 @@ guard		IN	A	10.20.30.30
 ui			IN	A	10.20.20.143
 speed		IN	A	192.168.0.10
 speed		IN	A	10.20.20.148
-sped		IN	A	10.20.30.14
+speed		IN	A	10.20.30.14
