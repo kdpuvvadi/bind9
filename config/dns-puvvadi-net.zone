@@ -34,3 +34,4 @@ ui			IN	A	10.20.20.143
 speed		IN	A	192.168.0.10
 speed		IN	A	10.20.20.148
 speed		IN	A	10.20.30.14
+gitea		IN	A	10.20.20.140
