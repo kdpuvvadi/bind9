@@ -31,7 +31,7 @@ metrics		IN	A	10.20.20.135
 otf			IN	A	10.20.20.137
 guard		IN	A	10.20.30.30
 ui			IN	A	10.20.20.143
-speed		IN	A	192.168.0.10
-speed		IN	A	10.20.20.148
-speed		IN	A	10.20.30.14
+speed		IN	A	192.168.0.9
+speed		IN	A	10.20.20.144
+speed		IN	A	10.20.30.11
 gitea		IN	A	10.20.20.140
