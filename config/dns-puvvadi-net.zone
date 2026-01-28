@@ -35,3 +35,4 @@ speed		IN	A	192.168.0.9
 speed		IN	A	10.20.20.144
 speed		IN	A	10.20.30.11
 gitea		IN	A	10.20.20.140
+esphome		IN	A	10.20.30.110
