@@ -34,5 +34,5 @@ ui			IN	A	10.20.20.143
 speed		IN	A	10.20.20.144
 gitea		IN	A	10.20.20.140
 esphome		IN	A	10.20.30.110
-idp			IN	A	10.20.20.145
-z2m			IN	A	10.20.30.9
+idp		IN	A	10.20.20.145
+z2m		IN	A	10.20.30.9
