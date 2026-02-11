@@ -36,3 +36,4 @@ gitea		IN	A	10.20.20.140
 esphome		IN	A	10.20.30.110
 idp		IN	A	10.20.20.145
 z2m		IN	A	10.20.30.9
+ui		IN	A	192.168.0.1
