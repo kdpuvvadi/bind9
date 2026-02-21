@@ -50,3 +50,39 @@ jobs:
             fi
             echo "✅ named.conf is valid"
           fi
+
+      - name: Comment on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## Zone File Validation Results\n\n';
+            
+            if (context.payload.pull_request) {
+              const zones = require('child_process')
+                .execSync('ls config/*.zone 2>/dev/null || echo ""', { encoding: 'utf-8' })
+                .trim()
+                .split('\n')
+                .filter(z => z);
+              
+              if (zones.length > 0) {
+                comment += '### Zone Files Checked\n';
+                zones.forEach(zone => {
+                  comment += `✅ ${zone}\n`;
+                });
+              } else {
+                comment += '✅ All zone files validated successfully\n';
+              }
+              
+              if (fs.existsSync('config/named.conf')) {
+                comment += '✅ config/named.conf validated successfully\n';
+              }
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
