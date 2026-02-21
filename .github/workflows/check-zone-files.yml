@@ -1,0 +1,92 @@
+name: Check Zone Files
+
+on:
+  pull_request:
+    paths:
+      - 'config/*.zone'
+      - 'config/named.conf'
+      - '.github/workflows/check-zone-files.yml'
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  validate-zones:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install BIND utilities
+        run: sudo apt-get update && sudo apt-get install -y bind9-utils
+
+      - name: Validate zone files
+        run: |
+          set -e
+          for zone_file in config/*.zone; do
+            echo "Checking $zone_file..."
+            # Extract zone name from filename
+            zone_name=$(basename "$zone_file" .zone | sed 's/-/./g')
+            zone_name="${zone_name}."
+            
+            if ! named-checkzone "$zone_name" "$zone_file"; then
+              echo "❌ Zone file validation failed: $zone_file"
+              exit 1
+            fi
+            echo "✓ $zone_file is valid"
+          done
+          echo "✅ All zone files are valid"
+
+      - name: Validate named.conf
+        run: |
+          if [ -f config/named.conf ]; then
+            echo "Checking config/named.conf..."
+            # Create required BIND directories
+            sudo mkdir -p /var/cache/bind
+            sudo mkdir -p /var/lib/bind
+            sudo chmod 755 /var/cache/bind /var/lib/bind
+            
+            if ! named-checkconf config/named.conf; then
+              echo "❌ named.conf validation failed"
+              exit 1
+            fi
+            echo "✅ named.conf is valid"
+          fi
+
+      - name: Comment on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## Zone File Validation Results\n\n';
+            
+            if (context.payload.pull_request) {
+              const zones = require('child_process')
+                .execSync('ls config/*.zone 2>/dev/null || echo ""', { encoding: 'utf-8' })
+                .trim()
+                .split('\n')
+                .filter(z => z);
+              
+              if (zones.length > 0) {
+                comment += '### Zone Files Checked\n';
+                zones.forEach(zone => {
+                  comment += `✅ ${zone}\n`;
+                });
+              } else {
+                comment += '✅ All zone files validated successfully\n';
+              }
+              
+              if (fs.existsSync('config/named.conf')) {
+                comment += '✅ config/named.conf validated successfully\n';
+              }
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }

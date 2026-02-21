@@ -1,7 +1,7 @@
 $ORIGIN dns.puvvadi.net.
 $TTL 86400	; 1 day
 @               IN      SOA     ns.dns.puvvadi.net. info.puvvadi.net. (
-						2303250956 ; serial
+								2102260934 ; serial
 				                3600       ; refresh (1 hour)
 				                3600       ; retry (1 hour)
 				                2419200    ; expire (4 weeks)
@@ -13,26 +13,26 @@ $TTL 86400	; 1 day
 ns              IN      A       10.10.10.10
 
 ; dns records below
-@		IN	A	10.10.10.10
-adguard		IN	A	10.20.30.30
-code		IN	A	10.20.20.6
-docker		IN	A	10.20.20.130
-jellyfin	IN	A	10.20.20.138
-jenkins		IN	A	10.20.20.3
-odin		IN	A	10.10.10.10
-pg		IN	A	10.20.20.115
-pve		IN	A	10.20.20.104
-runner1		IN	A	10.20.20.122
-pihole		IN	A	10.20.20.20
-ha		IN	A	10.20.30.5
-bind		IN	A	192.168.0.6
-cool		IN	A	10.20.20.134
-metrics		IN	A	10.20.20.135
-otf		IN	A	10.20.20.137
-guard		IN	A	10.20.30.30
-speed		IN	A	10.20.20.22
-gitea		IN	A	10.20.20.140
-esphome		IN	A	10.20.30.110
-idp		IN	A	10.20.20.145
-z2m		IN	A	10.20.30.9
-ui		IN	A	192.168.0.1
+@				IN		A		10.10.10.10
+adguard			IN		A		10.20.30.30
+code			IN		A		10.20.20.6
+docker			IN		A		10.20.20.130
+jellyfin		IN		A		10.20.20.138
+jenkins			IN		A		10.20.20.3
+odin			IN		A		10.10.10.10
+pg				IN		A		10.20.20.115
+pve				IN		A		10.20.20.104
+runner1			IN		A		10.20.20.122
+pihole			IN		A		10.20.20.20
+ha				IN		A		10.20.30.5
+bind			IN		A		192.168.0.6
+cool			IN		A		10.20.20.134
+metrics			IN		A		10.20.20.135
+otf				IN		A		10.20.20.137
+guard			IN		A		10.20.30.30
+speed			IN		A		10.20.20.22
+gitea			IN		A		10.20.20.140
+esphome			IN		A		10.20.30.110
+idp				IN		A		10.20.20.145
+z2m				IN		A		10.20.30.9
+ui				IN		A		192.168.0.1
