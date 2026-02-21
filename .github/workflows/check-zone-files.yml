@@ -39,7 +39,11 @@ jobs:
         run: |
           if [ -f config/named.conf ]; then
             echo "Checking config/named.conf..."
-            if ! named-checkconf config/named.conf; then
+            # Create required BIND directories
+            sudo mkdir -p /var/cache/bind
+            sudo mkdir -p /var/lib/bind
+            
+            if ! named-checkconf -t /var/cache/bind config/named.conf; then
               echo "❌ named.conf validation failed"
               exit 1
             fi
