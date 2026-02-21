@@ -42,8 +42,9 @@ jobs:
             # Create required BIND directories
             sudo mkdir -p /var/cache/bind
             sudo mkdir -p /var/lib/bind
+            sudo chmod 755 /var/cache/bind /var/lib/bind
             
-            if ! named-checkconf -t /var/cache/bind config/named.conf; then
+            if ! named-checkconf config/named.conf; then
               echo "❌ named.conf validation failed"
               exit 1
             fi
