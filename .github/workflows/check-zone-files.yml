@@ -7,6 +7,10 @@ on:
       - 'config/named.conf'
       - '.github/workflows/check-zone-files.yml'
 
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   validate-zones:
     runs-on: ubuntu-latest
