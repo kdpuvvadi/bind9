@@ -1,7 +1,7 @@
 $ORIGIN home.puvvadi.net.
 $TTL 86400	; 1 day
 @               IN      SOA     ns.home.puvvadi.net. info.puvvadi.net. (
-                				0307241720 ; serial
+                				1403261356 ; serial
 				                3600       ; refresh (1 hour)
 				                3600       ; retry (1 hour)
 				                2419200    ; expire (4 weeks)
@@ -13,5 +13,5 @@ $TTL 86400	; 1 day
 ns              IN      A       10.10.10.10
 
 ; dns records below
-@				IN		A		10.10.10.10
-kitchen         IN      A       10.20.20.67
+@				IN		A		10.20.20.68
+*				IN      A		10.20.20.68
