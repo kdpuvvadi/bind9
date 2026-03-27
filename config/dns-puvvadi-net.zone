@@ -42,3 +42,4 @@ app				IN		A		192.168.0.20
 *.app			IN		A		192.168.0.20
 odin			IN		A		10.10.10.10
 yggdrasil			IN		A		10.10.12.13
+wifi			IN		A		192.168.0.1
