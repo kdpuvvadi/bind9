@@ -30,6 +30,7 @@ cool			IN		A		10.20.20.134
 metrics			IN		A		10.20.20.135
 otf				IN		A		10.20.20.137
 guard			IN		A		10.20.30.30
+guard			IN		A		10.20.20.2
 speed			IN		A		10.20.20.22
 gitea			IN		A		10.20.20.140
 esphome			IN		A		10.20.30.110
