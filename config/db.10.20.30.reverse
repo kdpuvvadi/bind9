@@ -11,8 +11,6 @@ $TTL 86400	; 1 Day Default
                 IN      NS      ns.dns.puvvadi.net.
 
 5               IN      PTR     ha.dns.puvvadi.net.
-5               IN      PTR     time.puvvadi.net.
 9               IN      PTR     z2m.dns.puvvadi.net.
-30              IN      PTR     adguard.dns.puvvadi.net.
 30              IN      PTR     guard.dns.puvvadi.net.
 110             IN      PTR     esphome.dns.puvvadi.net.

@@ -18,7 +18,6 @@ $TTL 86400	; 1 Day Default
 22              IN      PTR     speed.dns.puvvadi.net.
 26              IN      PTR     git.dns.puvvadi.net.
 68              IN      PTR     home.puvvadi.net.
-68              IN      PTR     local.puvvadi.net.
 74              IN      PTR     run.puvvadi.net.
 104             IN      PTR     pve.dns.puvvadi.net.
 115             IN      PTR     pg.dns.puvvadi.net.
@@ -29,6 +28,5 @@ $TTL 86400	; 1 Day Default
 135             IN      PTR     metrics.dns.puvvadi.net.
 137             IN      PTR     otf.dns.puvvadi.net.
 138             IN      PTR     jellyfin.dns.puvvadi.net.
-138             IN      PTR     media.puvvadi.net.
 140             IN      PTR     gitea.dns.puvvadi.net.
 145             IN      PTR     idp.dns.puvvadi.net.

@@ -11,6 +11,5 @@ $TTL 86400	; 1 Day Default
                 IN      NS      ns.dns.puvvadi.net.
 
 1               IN      PTR     ui.dns.puvvadi.net.
-1               IN      PTR     wifi.dns.puvvadi.net.
 6               IN      PTR     bind.dns.puvvadi.net.
 20              IN      PTR     app.dns.puvvadi.net.
