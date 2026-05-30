@@ -1,0 +1,21 @@
+$ORIGIN 10.10.10.in-addr.arpa.
+$TTL 86400	; 1 Day Default
+@               IN      SOA     ns.dns.puvvadi.net. info.puvvadi.net. (
+                                2026053001 ; Serial
+                                3600       ; Refresh
+                                3600       ; Retry
+                                2419200    ; Expire
+                                3600       ; Minimum TTL
+                                )
+
+                IN      NS      ns.dns.puvvadi.net.
+
+10              IN      PTR     ns.cloud.puvvadi.net.
+10              IN      PTR     dns.puvvadi.net.
+10              IN      PTR     ns.dns.puvvadi.net.
+10              IN      PTR     odin.dns.puvvadi.net.
+10              IN      PTR     ns.home.puvvadi.net.
+10              IN      PTR     ns.local.puvvadi.net.
+10              IN      PTR     ns.media.puvvadi.net.
+10              IN      PTR     ns.run.puvvadi.net.
+10              IN      PTR     ns.time.puvvadi.net.
