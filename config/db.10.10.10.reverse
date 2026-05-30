@@ -1,5 +1,5 @@
 $ORIGIN 10.10.10.in-addr.arpa.
-$TTL 86400	; 1 Day Default
+$TTL 86400
 @               IN      SOA     ns.dns.puvvadi.net. info.puvvadi.net. (
                                 2026053001 ; Serial
                                 3600       ; Refresh

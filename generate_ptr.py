@@ -32,7 +32,7 @@ def parse_all_zones():
     for zone_file in zone_files:
         file_path = os.path.join(CONFIG_DIR, zone_file)
         try:
-            # Safely grab the $ORIGIN value manually to anchor dnspython
+            # Manually extract the $ORIGIN to pass to dnspython as an anchor point
             with open(file_path, "r") as f:
                 origin = None
                 for line in f:
@@ -51,17 +51,17 @@ def parse_all_zones():
             for name, node in zone.nodes.items():
                 name_str = str(name)
 
-                # Exclude wildcard records from generating PTR queries
+                # Exclude wildcard records from generating reverse PTR lines
                 if name_str.startswith("*"):
                     continue
 
-                # Ensure we absolute-anchor the FQDN target
+                # Process FQDN calculations completely
                 if name_str == "@":
                     fqdn = origin
                 else:
                     fqdn = f"{name_str}.{origin}"
 
-                # CRITICAL: Force the absolute trailing dot explicitly
+                # CRITICAL FIX: Ensure an absolute trailing dot is present
                 if not fqdn.endswith("."):
                     fqdn += "."
 
@@ -74,7 +74,7 @@ def parse_all_zones():
                                 subnet = ".".join(parts[:3])
                                 last_octet = parts[3]
 
-                                # Guard against duplicate record maps inside the collection array
+                                # Deduplicate records by checking if tuple exists
                                 record_tuple = (int(last_octet), fqdn)
                                 if record_tuple not in reverse_map[subnet]:
                                     reverse_map[subnet].append(record_tuple)
@@ -89,31 +89,31 @@ def write_reverse_zones_and_config(reverse_map):
     named_conf_entries = []
 
     for subnet, records in reverse_map.items():
-        # Deduplicate records: pick the first FQDN configured for an IP octet
         seen_octets = set()
         unique_records = []
 
-        # Sort predictably (lowest octet first)
+        # Sort predictably (lowest host octet address first)
         records.sort(key=lambda x: (x[0], x[1]))
 
+        # Prioritize the first unique forward name found per IP address host octet
         for last_octet, fqdn in records:
             if last_octet not in seen_octets:
                 seen_octets.add(last_octet)
                 unique_records.append((last_octet, fqdn))
 
+        # FIX: Correctly reverse the network octets for in-addr.arpa string naming
         subnet_parts = subnet.split(".")
-        # Standard Inverted Reverse Notation calculation
         reverse_zone_name = (
             f"{subnet_parts[2]}.{subnet_parts[1]}.{subnet_parts[0]}.in-addr.arpa"
         )
         file_name = f"db.{subnet}.reverse"
         output_path = os.path.join(CONFIG_DIR, file_name)
 
-        print(f"Writing Absolute Reverse File -> {output_path}")
+        print(f"Writing Cleaned Reverse Zone File -> {output_path}")
 
         with open(output_path, "w") as f:
             f.write(f"$ORIGIN {reverse_zone_name}.\n")
-            f.write(f"$TTL 86400\t; 1 Day Default\n")
+            f.write(f"$TTL 86400\n")
             f.write(f"@               IN      SOA     {PRIMARY_NS} {ADMIN_EMAIL} (\n")
             f.write(f"                                {TODAY_SERIAL} ; Serial\n")
             f.write(f"                                3600       ; Refresh\n")
@@ -124,7 +124,7 @@ def write_reverse_zones_and_config(reverse_map):
             f.write(f"                IN      NS      {PRIMARY_NS}\n\n")
 
             for last_octet, fqdn in unique_records:
-                # Output standard clean absolute mappings
+                # Format output records with precise absolute dot endings
                 f.write(f"{last_octet:<15} IN      PTR     {fqdn}\n")
 
         conf_snippet = (
@@ -135,7 +135,7 @@ def write_reverse_zones_and_config(reverse_map):
         )
         named_conf_entries.append(conf_snippet)
 
-    # Output structural configuration includes list
+    # Save out the master include config structural layout
     reverse_conf_path = os.path.join(CONFIG_DIR, REVERSE_CONF_NAME)
     with open(reverse_conf_path, "w") as f:
         f.write(
