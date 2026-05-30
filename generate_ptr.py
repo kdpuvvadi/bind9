@@ -23,17 +23,16 @@ TODAY_SERIAL = datetime.datetime.now().strftime("%Y%m%d01")
 def parse_all_zones():
     reverse_map = defaultdict(list)
 
-    # Ensure the target directory actually exists
     if not os.path.exists(CONFIG_DIR):
-        print(f"ERROR: Base configuration folder '{CONFIG_DIR}' could not be located.")
+        print(f"ERROR: Base configuration directory '{CONFIG_DIR}' not found.")
         sys.exit(1)
 
-    # Gather all zone files inside the target folder
     zone_files = [f for f in os.listdir(CONFIG_DIR) if f.endswith(".zone")]
 
     for zone_file in zone_files:
         file_path = os.path.join(CONFIG_DIR, zone_file)
         try:
+            # Safely grab the $ORIGIN value manually to anchor dnspython
             with open(file_path, "r") as f:
                 origin = None
                 for line in f:
@@ -47,27 +46,41 @@ def parse_all_zones():
                 continue
 
             zone = dns.zone.from_file(file_path, origin=origin)
-            print(f"Successfully Parsed: {zone_file} -> Domain Origin: {origin}")
+            print(f"Parsing Forward Zone: {zone_file} -> Origin: {origin}")
 
             for name, node in zone.nodes.items():
-                # Filter wildcards cleanly out of reverse mapping logic
-                if str(name).startswith("*"):
+                name_str = str(name)
+
+                # Exclude wildcard records from generating PTR queries
+                if name_str.startswith("*"):
                     continue
+
+                # Ensure we absolute-anchor the FQDN target
+                if name_str == "@":
+                    fqdn = origin
+                else:
+                    fqdn = f"{name_str}.{origin}"
+
+                # CRITICAL: Force the absolute trailing dot explicitly
+                if not fqdn.endswith("."):
+                    fqdn += "."
 
                 for rdataset in node.rdatasets:
                     if rdataset.rdtype == A:
                         for rdata in rdataset:
                             ip = rdata.address
-                            fqdn = origin if str(name) == "@" else f"{name}.{origin}"
-
                             parts = ip.split(".")
                             if len(parts) == 4:
                                 subnet = ".".join(parts[:3])
                                 last_octet = parts[3]
-                                reverse_map[subnet].append((int(last_octet), fqdn))
+
+                                # Guard against duplicate record maps inside the collection array
+                                record_tuple = (int(last_octet), fqdn)
+                                if record_tuple not in reverse_map[subnet]:
+                                    reverse_map[subnet].append(record_tuple)
 
         except Exception as e:
-            print(f"Skipping processing on file {zone_file} due to parser error: {e}")
+            print(f"Failed parsing file {zone_file}: {e}")
 
     return reverse_map
 
@@ -75,19 +88,28 @@ def parse_all_zones():
 def write_reverse_zones_and_config(reverse_map):
     named_conf_entries = []
 
-    # Iterate through mapped subnets to write the actual zone zonefiles first
     for subnet, records in reverse_map.items():
-        records.sort(key=lambda x: x[0])
-        subnet_parts = subnet.split(".")
+        # Deduplicate records: pick the first FQDN configured for an IP octet
+        seen_octets = set()
+        unique_records = []
 
-        # Proper reverse notation format calculation (Octet 3 . Octet 2 . Octet 1)
+        # Sort predictably (lowest octet first)
+        records.sort(key=lambda x: (x[0], x[1]))
+
+        for last_octet, fqdn in records:
+            if last_octet not in seen_octets:
+                seen_octets.add(last_octet)
+                unique_records.append((last_octet, fqdn))
+
+        subnet_parts = subnet.split(".")
+        # Standard Inverted Reverse Notation calculation
         reverse_zone_name = (
             f"{subnet_parts[2]}.{subnet_parts[1]}.{subnet_parts[0]}.in-addr.arpa"
         )
         file_name = f"db.{subnet}.reverse"
         output_path = os.path.join(CONFIG_DIR, file_name)
 
-        print(f"Writing Database Map -> {output_path}")
+        print(f"Writing Absolute Reverse File -> {output_path}")
 
         with open(output_path, "w") as f:
             f.write(f"$ORIGIN {reverse_zone_name}.\n")
@@ -101,10 +123,10 @@ def write_reverse_zones_and_config(reverse_map):
             f.write(f"                                )\n\n")
             f.write(f"                IN      NS      {PRIMARY_NS}\n\n")
 
-            for last_octet, fqdn in records:
+            for last_octet, fqdn in unique_records:
+                # Output standard clean absolute mappings
                 f.write(f"{last_octet:<15} IN      PTR     {fqdn}\n")
 
-        # Define internal paths mapping exactly to the container context
         conf_snippet = (
             f'zone "{reverse_zone_name}" IN {{\n'
             f"  type master;\n"
@@ -113,24 +135,19 @@ def write_reverse_zones_and_config(reverse_map):
         )
         named_conf_entries.append(conf_snippet)
 
-    # Write out the secondary structural configuration profile link index
+    # Output structural configuration includes list
     reverse_conf_path = os.path.join(CONFIG_DIR, REVERSE_CONF_NAME)
-    print(f"Compiling Zone File Link Configuration -> {reverse_conf_path}")
-
     with open(reverse_conf_path, "w") as f:
         f.write(
-            f"// Autogenerated by generate_ptr.py on {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"// Autogenerated on {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
         )
-        f.write("// DO NOT MODIFIED THIS CONFIGURATION FILE MANUALLY\n\n")
         for entry in named_conf_entries:
             f.write(entry + "\n\n")
 
-    print("\nData tables completely synchronized.")
+    print("\nAll reverse mappings are strictly absolute and synchronized.")
 
 
 if __name__ == "__main__":
     records = parse_all_zones()
     if records:
         write_reverse_zones_and_config(records)
-    else:
-        print("No dynamic record maps caught. Operation halted.")
