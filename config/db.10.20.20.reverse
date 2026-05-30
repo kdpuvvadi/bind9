@@ -1,0 +1,32 @@
+$ORIGIN 20.20.10.in-addr.arpa.
+$TTL 86400
+@               IN      SOA     ns.dns.puvvadi.net. info.puvvadi.net. (
+                                2026053001 ; Serial
+                                3600       ; Refresh
+                                3600       ; Retry
+                                2419200    ; Expire
+                                3600       ; Minimum TTL
+                                )
+
+                IN      NS      ns.dns.puvvadi.net.
+
+2               IN      PTR     guard.dns.puvvadi.net.
+3               IN      PTR     jenkins.dns.puvvadi.net.
+6               IN      PTR     code.dns.puvvadi.net.
+20              IN      PTR     pihole.dns.puvvadi.net.
+21              IN      PTR     caddy.dns.puvvadi.net.
+22              IN      PTR     speed.dns.puvvadi.net.
+26              IN      PTR     git.dns.puvvadi.net.
+68              IN      PTR     home.puvvadi.net.
+74              IN      PTR     run.puvvadi.net.
+104             IN      PTR     pve.dns.puvvadi.net.
+115             IN      PTR     pg.dns.puvvadi.net.
+122             IN      PTR     runner1.dns.puvvadi.net.
+124             IN      PTR     cloud.puvvadi.net.
+130             IN      PTR     docker.dns.puvvadi.net.
+134             IN      PTR     cool.dns.puvvadi.net.
+135             IN      PTR     metrics.dns.puvvadi.net.
+137             IN      PTR     otf.dns.puvvadi.net.
+138             IN      PTR     jellyfin.dns.puvvadi.net.
+140             IN      PTR     gitea.dns.puvvadi.net.
+145             IN      PTR     idp.dns.puvvadi.net.

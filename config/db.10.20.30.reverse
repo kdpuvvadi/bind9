@@ -1,0 +1,16 @@
+$ORIGIN 30.20.10.in-addr.arpa.
+$TTL 86400
+@               IN      SOA     ns.dns.puvvadi.net. info.puvvadi.net. (
+                                2026053001 ; Serial
+                                3600       ; Refresh
+                                3600       ; Retry
+                                2419200    ; Expire
+                                3600       ; Minimum TTL
+                                )
+
+                IN      NS      ns.dns.puvvadi.net.
+
+5               IN      PTR     ha.dns.puvvadi.net.
+9               IN      PTR     z2m.dns.puvvadi.net.
+30              IN      PTR     adguard.dns.puvvadi.net.
+110             IN      PTR     esphome.dns.puvvadi.net.
