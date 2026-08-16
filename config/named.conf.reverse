@@ -10,6 +10,11 @@ zone "10.10.10.in-addr.arpa" IN {
   file "/etc/bind/db.10.10.10.reverse";
 };
 
+zone "30.10.10.in-addr.arpa" IN {
+  type master;
+  file "/etc/bind/db.10.10.30.reverse";
+};
+
 zone "30.20.10.in-addr.arpa" IN {
   type master;
   file "/etc/bind/db.10.20.30.reverse";
