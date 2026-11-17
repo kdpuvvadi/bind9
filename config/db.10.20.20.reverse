@@ -1,7 +1,7 @@
 $ORIGIN 20.20.10.in-addr.arpa.
 $TTL 86400
 @               IN      SOA     ns.dns.puvvadi.net. info.puvvadi.net. (
-                                2026061101 ; Serial
+                                2026111701 ; Serial
                                 3600       ; Refresh
                                 3600       ; Retry
                                 2419200    ; Expire
@@ -15,6 +15,7 @@ $TTL 86400
 20              IN      PTR     pihole.dns.puvvadi.net.
 21              IN      PTR     caddy.dns.puvvadi.net.
 22              IN      PTR     speed.dns.puvvadi.net.
+24              IN      PTR     dash.dns.puvvadi.net.
 26              IN      PTR     git.dns.puvvadi.net.
 68              IN      PTR     home.puvvadi.net.
 74              IN      PTR     run.puvvadi.net.
